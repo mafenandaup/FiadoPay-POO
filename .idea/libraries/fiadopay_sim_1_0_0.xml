@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="fiadopay-sim-1.0.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/api/fiadopay-sim-1.0.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
