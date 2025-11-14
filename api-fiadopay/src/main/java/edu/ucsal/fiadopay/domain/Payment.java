@@ -1,5 +1,6 @@
 package edu.ucsal.fiadopay.domain;
 
+import edu.ucsal.fiadopay.annotations.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
@@ -20,6 +21,7 @@ public class Payment {
     @Column(nullable = false)
     private Long merchantId;
 
+    @PaymentMethod
     @Column(nullable = false, length = 20)
     private String method; // CARD|PIX|DEBIT|BOLETO
 
