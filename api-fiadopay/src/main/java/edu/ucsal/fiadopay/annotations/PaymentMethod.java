@@ -2,6 +2,7 @@ package edu.ucsal.fiadopay.annotations;
 
 import edu.ucsal.fiadopay.validator.PaymentMethodValidator;
 import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -15,7 +16,14 @@ public @interface PaymentMethod {
 
     String message() default "Método de pagamento inválido. Permitidos: PIX, BOLETO, CARTAO, DEBIT."; //msg de erro
 
-    public enum Methods
-    {PIX, BOLETO, CARTAO, DEBIT}
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
 
+    enum Methods {
+        PIX,
+        DINHEIRO,
+        CARTAO,
+        CREDIT,
+        DEBIT
+    }
 }

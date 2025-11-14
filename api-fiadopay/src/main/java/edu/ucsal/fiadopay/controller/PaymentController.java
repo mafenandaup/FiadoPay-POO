@@ -1,6 +1,8 @@
 package edu.ucsal.fiadopay.controller;
 
 import edu.ucsal.fiadopay.service.PaymentService;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,12 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 public class PaymentController {
   private final PaymentService service;
 
+
+  @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Pagamento criado."),
+            @ApiResponse(responseCode = "400", description = "Erro de validação ou método de pagamento inválido."),
+            @ApiResponse(responseCode = "401", description = "Ação não-autorizada."),
+  })
   @PostMapping("/payments")
   @SecurityRequirement(name = "bearerAuth")
   public ResponseEntity<PaymentResponse> create(

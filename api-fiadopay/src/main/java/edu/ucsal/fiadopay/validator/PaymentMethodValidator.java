@@ -1,6 +1,7 @@
 package edu.ucsal.fiadopay.validator;
 
 import edu.ucsal.fiadopay.annotations.PaymentMethod;
+import edu.ucsal.fiadopay.exceptions.InvalidMethodException;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.stereotype.Component;
@@ -9,11 +10,14 @@ import org.springframework.stereotype.Component;
 public class PaymentMethodValidator implements ConstraintValidator<PaymentMethod, String> {
     @Override
     public boolean isValid(String method, ConstraintValidatorContext constraintValidatorContext) {
-        for (PaymentMethod.Methods m : PaymentMethod.Methods.values()) {
-            if (m.name().equalsIgnoreCase(method)) {
+
+        if (method == null) return false;
+
+        try {
+            PaymentMethod.Methods.valueOf(method);
             return true;
+        } catch (IllegalArgumentException ex) {
+            return false;
         }
-    }
-        return false;
     }
 }

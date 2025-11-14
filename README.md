@@ -3,6 +3,10 @@
 
 ## Design Patterns Aplicados
 
+* Strategy -
+* 
+
+
 ## Anotações escolhidas e metadados
 
 

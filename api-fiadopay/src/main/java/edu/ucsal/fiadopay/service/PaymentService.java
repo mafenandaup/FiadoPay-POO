@@ -100,7 +100,7 @@ public class PaymentService {
 
     payments.save(payment);
 
-    CompletableFuture.runAsync(() -> processAndWebhook(payment.getId()));
+   CompletableFuture.runAsync(() -> processAndWebhook(payment.getId()));
 
     return toResponse(payment);
   }
