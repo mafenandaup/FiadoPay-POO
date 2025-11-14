@@ -1,8 +1,16 @@
 # FiadoPay-POO - Implementação 
 
-## Requisitos
+
+## Design Patterns Aplicados
+
+## Anotações escolhidas e metadados
 
 
+## Mecanismo de Reflexão 
+
+## Threads
+
+## Limites Conhecidos 
 
 ## Rodar
 ```bash
