@@ -1,16 +1,25 @@
-# FiadoPay-POO - Implementação 
+# FiadoPay-POO - Refatoração de API com base em engenharia 
 
+Para assegurar as melhores práticas de desenvolvimento, fizemos uma refatoração do projeto fiadopay, que é um sistema 
+financeiro baseado em controle de transações e reembolsos. 
 
 ## Design Patterns Aplicados
 
 * Strategy -
 * Chain of Responsibility - 
 * Observer - 
-* State - Utilizado para intercambiar entre estados de 
+* State - Utilizado para intercambiar entre estados de pagamento (Pending, Approved, )
 
 
-## Anotações escolhidas e metadados
+## Anotações Customizadas e metadados
 
+* @PaymentMethod -
+* @AntiFraud -
+* @WebhookSink -
+* @HasAdminRole -  
+
+Anotações próprias do springboot, como @Component, @Service, @Repository foram utilizadas a fim de injeção de dependências, 
+garantindo o funcionamento íntegro da aplicação. 
 
 ## Mecanismo de Reflexão 
 
