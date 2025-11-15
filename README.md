@@ -16,7 +16,7 @@ financeiro baseado em controle de transações e reembolsos.
 * @PaymentMethod -
 * @AntiFraud -
 * @WebhookSink -
-* @HasAdminRole -  
+* @CurrencyType -  
 
 Anotações próprias do springboot, como @Component, @Service, @Repository foram utilizadas a fim de injeção de dependências, 
 garantindo o funcionamento íntegro da aplicação. 

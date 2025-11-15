@@ -5,7 +5,7 @@ import edu.ucsal.fiadopay.controller.PaymentRequest;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class AntiFraudValidator implements ConstraintValidator <AntiFraud, PaymentRequest>{
+public class AntiFraudValidator implements ConstraintValidator <AntiFraud, PaymentRequest> {
 
     private double threshold;
 
@@ -16,8 +16,9 @@ public class AntiFraudValidator implements ConstraintValidator <AntiFraud, Payme
 
     @Override
     public boolean isValid(PaymentRequest request, ConstraintValidatorContext constraintValidatorContext) {
-        if (request.amount() == null){
+        if (request.amount() == null) {
             return true;
         }
+        return false;
     }
 }
