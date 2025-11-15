@@ -4,7 +4,9 @@
 ## Design Patterns Aplicados
 
 * Strategy -
-* 
+* Chain of Responsibility - 
+* Observer - 
+* State - Utilizado para intercambiar entre estados de 
 
 
 ## Anotações escolhidas e metadados
@@ -16,7 +18,27 @@
 
 ## Limites Conhecidos 
 
-## Rodar
+## Como Utilizar
+
+clone o repositório:
+
+```bash
+git clone https://github.com/mafenandaup/FiadoPay-POO.git
+```
+
+Mude o diretório para a pasta principal do projeto
+
+```bash
+cd api-fiadopay
+```
+
+```bash
+./mvnw spring-boot:run
+# ou
+mvn spring-boot:run
+```
+
+Acione o seguinte comando no terminal da IDE:
 ```bash
 ./mvnw spring-boot:run
 # ou
