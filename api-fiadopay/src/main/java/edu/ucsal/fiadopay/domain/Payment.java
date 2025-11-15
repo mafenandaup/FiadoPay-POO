@@ -1,5 +1,6 @@
 package edu.ucsal.fiadopay.domain;
 
+import edu.ucsal.fiadopay.annotations.CurrencyType;
 import edu.ucsal.fiadopay.annotations.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,6 +29,7 @@ public class Payment {
     @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal amount;
 
+    @CurrencyType
     @Column(nullable = false, length = 10)
     private String currency;
 

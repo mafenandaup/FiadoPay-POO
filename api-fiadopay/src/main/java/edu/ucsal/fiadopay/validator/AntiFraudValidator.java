@@ -7,7 +7,7 @@ import jakarta.validation.ConstraintValidatorContext;
 
 public class AntiFraudValidator implements ConstraintValidator <AntiFraud, PaymentRequest> {
 
-    private double threshold;
+    private double limite;
 
     @Override
     public void initialize(AntiFraud constraintAnnotation) {
@@ -19,6 +19,13 @@ public class AntiFraudValidator implements ConstraintValidator <AntiFraud, Payme
         if (request.amount() == null) {
             return true;
         }
-        return false;
+        if (request.amount().doubleValue() > limite) {
+            constraintValidatorContext.buildConstraintViolationWithTemplate(
+                            "Valor acima do limite anti fraude: R$ " + limite + ". Tente novamente."
+                    ).addPropertyNode("amount")
+                    .addConstraintViolation();
+            return false;
+        }
+        return true;
     }
 }
