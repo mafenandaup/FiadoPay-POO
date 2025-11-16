@@ -7,10 +7,6 @@ import jakarta.validation.ConstraintValidatorContext;
 import java.util.Currency;
 
 public class CurrencyTypeValidator implements ConstraintValidator<CurrencyType, String> {
-    @Override
-    public void initialize(CurrencyType constraintAnnotation) {
-        ConstraintValidator.super.initialize(constraintAnnotation);
-    }
 
     @Override
     public boolean isValid(String moeda, ConstraintValidatorContext constraintValidatorContext) {

@@ -5,9 +5,10 @@ import edu.ucsal.fiadopay.controller.PaymentRequest;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
+
 public class AntiFraudValidator implements ConstraintValidator <AntiFraud, PaymentRequest> {
 
-    private double limite;
+    private double limite = 5000.00; //fixo por agr
 
     @Override
     public void initialize(AntiFraud constraintAnnotation) {

@@ -5,7 +5,7 @@ import edu.ucsal.fiadopay.annotations.PaymentMethod;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 
-@AntiFraud(regra = "TransacaoLimite", limite = 10000)
+@AntiFraud
 public record PaymentRequest(
     @NotBlank @PaymentMethod String method,
     @NotBlank String currency,
