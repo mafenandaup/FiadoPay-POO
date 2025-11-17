@@ -9,7 +9,7 @@ import java.util.Currency;
 public class CurrencyTypeValidator implements ConstraintValidator<CurrencyType, String> {
 
     @Override
-    public boolean isValid(String moeda, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(String moeda, ConstraintValidatorContext context) {
         if (moeda == null || moeda.trim().isEmpty()) {
             return false;
         }
@@ -17,6 +17,11 @@ public class CurrencyTypeValidator implements ConstraintValidator<CurrencyType, 
             Currency.getInstance(moeda.toUpperCase()); // usa a classe própria do java p validar os tipos de moeda válidos
             return true;
         } catch (IllegalArgumentException e) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(
+                            "Tipo de moeda inválido: '" + moeda + "'. Use um código ISO 4217 válido (ex: BRL, USD)."
+                    )
+                    .addConstraintViolation();
             return false;
         }
     }

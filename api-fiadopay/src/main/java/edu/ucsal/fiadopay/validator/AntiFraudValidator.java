@@ -16,14 +16,15 @@ public class AntiFraudValidator implements ConstraintValidator <AntiFraud, Payme
     }
 
     @Override
-    public boolean isValid(PaymentRequest request, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(PaymentRequest request, ConstraintValidatorContext context) {
         if (request.amount() == null) {
             return true;
         }
         if (request.amount().doubleValue() > limite) {
-            constraintValidatorContext.buildConstraintViolationWithTemplate(
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(
                             "Valor acima do limite anti fraude: R$ " + limite + ". Tente novamente."
-                    ).addPropertyNode("amount")
+                    )
                     .addConstraintViolation();
             return false;
         }
