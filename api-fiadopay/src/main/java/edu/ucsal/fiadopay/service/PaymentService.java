@@ -3,6 +3,7 @@ package edu.ucsal.fiadopay.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ucsal.fiadopay.controller.PaymentRequest;
 import edu.ucsal.fiadopay.controller.PaymentResponse;
+import edu.ucsal.fiadopay.designPatterns.PaymentStrategy.PaymentProcessor;
 import edu.ucsal.fiadopay.domain.Merchant;
 import edu.ucsal.fiadopay.domain.Payment;
 import edu.ucsal.fiadopay.domain.WebhookDelivery;
@@ -29,6 +30,8 @@ import java.util.concurrent.CompletableFuture;
 
 @Service
 public class PaymentService {
+
+    private final PaymentProcessor processor;
   private final MerchantRepository merchants;
   private final PaymentRepository payments;
   private final WebhookDeliveryRepository deliveries;
@@ -38,8 +41,9 @@ public class PaymentService {
   @Value("${fiadopay.processing-delay-ms}") long delay;
   @Value("${fiadopay.failure-rate}") double failRate;
 
-  public PaymentService(MerchantRepository merchants, PaymentRepository payments, WebhookDeliveryRepository deliveries, ObjectMapper objectMapper) {
-    this.merchants = merchants;
+  public PaymentService(PaymentProcessor processor, MerchantRepository merchants, PaymentRepository payments, WebhookDeliveryRepository deliveries, ObjectMapper objectMapper) {
+      this.processor = processor;
+      this.merchants = merchants;
     this.payments = payments;
     this.deliveries = deliveries;
     this.objectMapper = objectMapper;
@@ -82,6 +86,11 @@ public class PaymentService {
       total = req.amount().multiply(factor).setScale(2, RoundingMode.HALF_UP);
     }
 
+      BigDecimal finalAmount = processor.pay(
+              req.method(),
+              req.amount(),
+              req.installments()
+      );
     var payment = Payment.builder()
         .id("pay_"+UUID.randomUUID().toString().substring(0,8))
         .merchantId(mid)

@@ -2,6 +2,7 @@
 package edu.ucsal.fiadopay.validator;
 
 import edu.ucsal.fiadopay.annotations.PaymentMethod;
+import edu.ucsal.fiadopay.designPatterns.PaymentStrategy.MethodsList;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,6 @@ public class PaymentMethodValidator implements ConstraintValidator<PaymentMethod
             return false;
         }
 
-        return METODOS.contains(method.toUpperCase());
+        return MethodsList.fromString(method) != null;
     }
 }

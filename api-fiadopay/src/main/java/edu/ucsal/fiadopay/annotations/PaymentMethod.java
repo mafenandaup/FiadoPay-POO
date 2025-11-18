@@ -19,11 +19,4 @@ public @interface PaymentMethod {
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 
-    enum Methods {
-        PIX,
-        DINHEIRO,
-        CARTAO,
-        CREDIT,
-        DEBIT
-    }
 }

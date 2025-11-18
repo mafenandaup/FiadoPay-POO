@@ -17,6 +17,7 @@ import java.util.UUID;
 public class MerchantAdminController {
   private final MerchantRepository merchants;
 
+
   @PostMapping
   public Merchant create(@Valid @RequestBody MerchantCreateDTO dto) {
     if (merchants.existsByName(dto.name())) {
