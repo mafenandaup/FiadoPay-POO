@@ -86,11 +86,12 @@ public class PaymentService {
       total = req.amount().multiply(factor).setScale(2, RoundingMode.HALF_UP);
     }
 
-      BigDecimal finalAmount = processor.pay(
-              req.method(),
-              req.amount(),
-              req.installments()
-      );
+    BigDecimal finalAmount = processor.pay(
+            req.method(),
+            req.amount(),
+            req.installments()
+    );
+
     var payment = Payment.builder()
         .id("pay_"+UUID.randomUUID().toString().substring(0,8))
         .merchantId(mid)
