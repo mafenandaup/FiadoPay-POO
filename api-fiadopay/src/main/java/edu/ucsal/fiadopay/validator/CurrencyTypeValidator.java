@@ -4,8 +4,11 @@ import edu.ucsal.fiadopay.annotations.CurrencyType;
 import edu.ucsal.fiadopay.annotations.PaymentMethod;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.stereotype.Component;
+
 import java.util.Currency;
 
+@Component
 public class CurrencyTypeValidator implements ConstraintValidator<CurrencyType, String> {
 
     @Override
