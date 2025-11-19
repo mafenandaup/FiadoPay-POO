@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = PaymentMethodValidator.class)
 public @interface PaymentMethod {
 
-    String message() default "Método de pagamento inválido. Permitidos: PIX, BOLETO, CARTAO, DEBIT."; //msg de erro
+    String message() default "Método de pagamento inválido. Permitidos: PIX, BOLETO, CREDITO, DEBITO."; //msg de erro
 
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

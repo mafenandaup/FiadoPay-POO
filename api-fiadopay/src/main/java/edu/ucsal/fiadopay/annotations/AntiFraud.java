@@ -19,5 +19,4 @@ public @interface AntiFraud {
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 
-    // refatorar com classes strategy, uma com regra e outra com limite.. como podemos manter o validator?
 }

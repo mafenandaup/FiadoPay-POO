@@ -231,7 +231,8 @@ public class PaymentService {
     return new PaymentResponse(
         p.getId(), p.getStatus().name(), p.getMethod(),
         p.getAmount(), p.getInstallments(), p.getMonthlyInterest(),
-        p.getTotalWithInterest()
+        p.getTotalWithInterest(),
+      null // caso n tiver erro
     );
   }
 }
