@@ -40,7 +40,8 @@ public class PaymentController {
           return ResponseEntity.badRequest().body(
                   new PaymentResponse(idemKey, "ERRO", req.method(),
                           req.amount(), req.installments(),
-                          null, null)
+                          0, null,
+                          "Erro: " + e.getMessage())
           );
       }
   }

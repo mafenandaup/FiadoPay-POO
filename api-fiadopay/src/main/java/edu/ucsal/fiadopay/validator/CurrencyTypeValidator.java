@@ -19,7 +19,7 @@ public class CurrencyTypeValidator implements ConstraintValidator<CurrencyType, 
         } catch (IllegalArgumentException e) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
-                            "Tipo de moeda inválido: '" + moeda + "'. Use um código ISO 4217 válido (ex: BRL, USD)."
+                            "Tipo de moeda inválido: '" + moeda + "'.Tente novamente."
                     )
                     .addConstraintViolation();
             return false;
