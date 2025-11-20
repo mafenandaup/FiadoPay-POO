@@ -44,12 +44,18 @@ public class PaymentService {
   @Value("${fiadopay.processing-delay-ms}") long delay;
   @Value("${fiadopay.failure-rate}") double failRate;
 
-  public PaymentService(PaymentProcessor processor, MerchantRepository merchants, PaymentRepository payments, WebhookDeliveryRepository deliveries, ObjectMapper objectMapper) {
-      this.processor = processor;
-      this.merchants = merchants;
+  public PaymentService(PaymentProcessor processor,
+                        MerchantRepository merchants,
+                        PaymentRepository payments,
+                        WebhookDeliveryRepository deliveries,
+                        ObjectMapper objectMapper,
+                        @Qualifier("paymentExecutor") ExecutorService executorService) {
+    this.processor = processor;
+    this.merchants = merchants;
     this.payments = payments;
     this.deliveries = deliveries;
     this.objectMapper = objectMapper;
+    this.executorService = executorService;
   }
 
   private Merchant merchantFromAuth(String auth){
