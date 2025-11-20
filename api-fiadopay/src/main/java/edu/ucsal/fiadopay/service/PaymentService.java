@@ -15,6 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.beans.factory.annotation.Qualifier;
+import java.util.concurrent.ExecutorService;
+
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -30,12 +33,12 @@ import java.util.concurrent.CompletableFuture;
 
 @Service
 public class PaymentService {
-
     private final PaymentProcessor processor;
   private final MerchantRepository merchants;
   private final PaymentRepository payments;
   private final WebhookDeliveryRepository deliveries;
   private final ObjectMapper objectMapper;
+  private final ExecutorService executorService;
 
   @Value("${fiadopay.webhook-secret}") String secret;
   @Value("${fiadopay.processing-delay-ms}") long delay;
