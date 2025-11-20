@@ -118,7 +118,7 @@ public class PaymentService {
 
     payments.save(payment);
 
-   CompletableFuture.runAsync(() -> processAndWebhook(payment.getId()));
+      executorService.submit(() -> processAndWebhook(payment.getId()));
 
     return toResponse(payment);
   }
@@ -191,7 +191,7 @@ public class PaymentService {
         .lastAttemptAt(null)
         .build());
 
-    CompletableFuture.runAsync(() -> tryDeliver(delivery.getId()));
+      executorService.submit(() -> tryDeliver(delivery.getId()));
   }
 
   private void tryDeliver(Long deliveryId){
