@@ -88,6 +88,7 @@ curl -X POST http://localhost:8080/fiadopay/admin/merchants   -H "Content-Type: 
 "webhookUrl":"http://localhost:8081/webhooks/payments",
 "status":"ACTIVE"}
 ```
+![Saída Esperada Teste 1](api-fiadopay/src/docs/assets/Teste1_200.png)
 
 **IMPORTANTE**: a cada geração de merchant, serão retornados ID e Chave secret diferentes. Então se tentar usar as mesmas saídas do exemplo anterior em um teste real, elas não serão validadas ao obter o token de autenticação.
 
@@ -99,12 +100,12 @@ Caso tente inserir uma string de nome vazia:
 ```bash
 {"webhookUrl":"must not be blank"}
 ```
-
+![Saída Esperada Teste 1](api-fiadopay/src/docs/assets/Teste1-400.png)
 Em caso de nome e webhook iguais a um existente:
 ```bash
 {"webhookUrl":"must not be blank"}
 ```
-
+![Saída Esperada Teste 1](api-fiadopay/src/docs/assets/Teste1-409.png)
 
 
 ## Teste 2: Obtendo o Token de Autenticação do merchant:
@@ -125,7 +126,7 @@ curl -X POST http://localhost:8080/fiadopay/auth/token   -H "Content-Type: appli
 ```bash
 {"access_token":"FAKE-1","token_type":"Bearer","expires_in":3600}
 ```
-
+![Saída Esperada Teste 2](api-fiadopay/src/docs/assets/Teste2-200.png)
 Caso tente inserir qualquer um dos campos como uma string vazia, aparecerá o seguinte erro:
 
 ```bash
@@ -134,7 +135,7 @@ Caso tente inserir qualquer um dos campos como uma string vazia, aparecerá o se
 ```bash
 {"id":"must not be blank"}
 ```
-
+![Saída Esperada Teste 2](api-fiadopay/src/docs/assets/Teste2-400.png)
 
 ## Teste 3: Criação/validação do pagamento:
 
@@ -147,13 +148,13 @@ Caso tente inserir qualquer um dos campos como uma string vazia, aparecerá o se
 ```bash
 {"id":"pay_5468f9b6","status":"PENDING","method":"CREDITO","amount":4999,"installments":12,"interestRate":null,"total":4999,"errorMsg":null}
 ```
-
+![Saída Esperada Teste 3](api-fiadopay/src/docs/assets/Teste3-201.png)
 Ao tentar inserir method/currency com uma string vazia OU amount como uma quantia nula:
-
+![Saída Esperada Teste 3](api-fiadopay/src/docs/assets/Teste3-400-CampoVazio.png)
 ```bash
 {"timestamp":"2025-11-21T15:08:56.217+00:00","status":400,"error":"Bad Request"}
 ```
-
+![Saída Esperada Teste 3](api-fiadopay/src/docs/assets/Teste3-400-CampoVazio.png)
 Ao inserir um método com uma string diferente das permitidas (PIX, CARTAO, DEBITO, CREDITO) - as strings são validadas com IgnoreCase, então caracteres maiúsculos e minísculos não se diferenciam, mas caracteres especiais (como números e acentos) sim.
 
 exemplo de campo inválido:
@@ -161,12 +162,11 @@ exemplo de campo inválido:
 ```bash
 "method":"PIXIIII"
 ```
-
 saída esperada:
 ```bash
 {"method":"Método de pagamento inválido. Permitidos: PIX, BOLETO, CREDITO, DEBITO."}
 ```
-
+![Saída Esperada Teste 3](api-fiadopay/src/docs/assets/Teste3-400-PIIIIIX.png)
 Ao inserir uma moeda (currency) diferente do formato estipulado pela biblioteca java.Currency (3 letras, case Sensitive - nesse caso, maíusculas e minúsculas são diferenciados)
 
 exemplo de campo inválido:
@@ -179,7 +179,7 @@ saída esperada:
 ```bash
 {"currency":"Tipo de moeda inválido: 'brll'.Tente novamente."}
 ```
-
+![Saída Esperada Teste 3](api-fiadopay/src/docs/assets/Teste3-400-BRLLL.png)
 Ao estipular uma quantia maior que o limite de 5000.0 proposto no AntiFraudValidator:
 
 
@@ -192,14 +192,14 @@ saída esperada:
 ```bash
 {"amount":"Valor acima do limite anti fraude: R$ 5000.0. Tente novamente."}
 ```
-
+![Saída Esperada Teste 3](api-fiadopay/src/docs/assets/Teste3-400-limite.png)
 
 Ao inserir número de installments menor que 1 e maior que 12:
 
 ```bash
  {"installments":"must be less than or equal to 12"}
 ```
-
+![Saída Esperada Teste 3](api-fiadopay/src/docs/assets/Teste3-400-installments.png)
 ## Teste 4: Criação/validação do pagamento:
 
 1) **Entrada válida**
@@ -219,14 +219,58 @@ curl http://localhost:8080/fiadopay/gateway/payments/pay_5468f9b7
 ```bash
 {"id":"pay_5468f9b6","status":"APPROVED","method":"CREDITO","amount":4999.00,"installments":12,"interestRate":null,"total":4999.00,"errorMsg":null}
 ```
-
+![Saída Esperada Teste 4](api-fiadopay/src/docs/assets/Teste4-200.png)
 String nula no campo paymentId:
 
 ```bash
 {"timestamp":"2025-11-21T15:28:51.823+00:00","status":404,"error":"Not Found","path":"/fiadopay/gateway/payments/"}
 ```
+## Teste 5: Solicitação de Reembolso 
+
+1) **Entrada válida**
+```bash
+curl -X POST \
+  'http://localhost:8080/fiadopay/gateway/refunds' \
+  -H 'accept: */*' \
+  -H 'Authorization: Bearer FAKE-1' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "paymentId": "pay_39d67e2b"
+  }'
+```
+
+2) Saída esperada 
+
+```bash
+{
+  "id": "ref_0dadd0a1-04d8-441a-b181-78a403d5d3a9",
+  "status": "PENDING"
+}
+```
+![Saída Esperada Teste 5](api-fiadopay/src/docs/assets/Teste5-200.png)
+Entrada inválida (paymentId vazio)
 
 
+```bash
+curl -X POST \
+  'http://localhost:8080/fiadopay/gateway/refunds' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "paymentId": ""
+  }'
+
+
+```
+Saída esperada (400 - Erro)
+
+```bash
+{
+  "paymentId": "não deve estar em branco"
+}
+
+```
+![Saída Esperada Teste 5](api-fiadopay/src/docs/assets/Teste5-400.png)
 ## Fluxo
 
 1) **Cadastrar merchant**
