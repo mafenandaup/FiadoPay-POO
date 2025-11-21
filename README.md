@@ -8,7 +8,7 @@ financeiro baseado em controle de transações e reembolsos.
 * **Strategy** - Utilizado para desacoplar a lógica específica de cada método de pagamento (`PixStrategy`, `CreditCardStrategy`, `DebitCardStrategy`, `BoletoStrategy`). O `PaymentService` delega o processamento para a implementação correta, que é selecionada dinamicamente via Reflexão.
 * **Chain of Responsibility** - Implementado para o fluxo de Antifraud. As regras de validação são encadeadas, permitindo adicionar ou remover verificações de forma modular.
 * **Observer** - Implementado para a funcinalidade de Webhook Sink. O `PaymentService` (Subject) notifica os listeners (classes anotadas com `@WebhookSink`) de forma assíncrona quando um pagamento é concluído.
-* **State** - Utilizado para intercambiar entre estados de pagamento (`Pending`, `Approved`, `Cancelled`, `Reproved`, `Refunded`). Cada estado possui comportamento próprio, permitindo transições limpas e coesas.
+
 
 
 ## Anotações Customizadas e metadados
