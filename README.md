@@ -225,7 +225,52 @@ String nula no campo paymentId:
 ```bash
 {"timestamp":"2025-11-21T15:28:51.823+00:00","status":404,"error":"Not Found","path":"/fiadopay/gateway/payments/"}
 ```
+## Teste 5: Solicitação de Reembolso 
 
+1) **Entrada válida**
+```bash
+curl -X POST \
+  'http://localhost:8080/fiadopay/gateway/refunds' \
+  -H 'accept: */*' \
+  -H 'Authorization: Bearer FAKE-1' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "paymentId": "pay_39d67e2b"
+  }'
+```
+
+2) Saída esperada 
+
+```bash
+{
+  "id": "ref_0dadd0a1-04d8-441a-b181-78a403d5d3a9",
+  "status": "PENDING"
+}
+```
+![Saída Esperada Teste 5](api-fiadopay/src/docs/assets/Teste5-200.png)
+Entrada inválida (paymentId vazio)
+
+
+```bash
+curl -X POST \
+  'http://localhost:8080/fiadopay/gateway/refunds' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "paymentId": ""
+  }'
+
+
+```
+Saída esperada (400 - Erro)
+
+```bash
+{
+  "paymentId": "não deve estar em branco"
+}
+
+```
+![Saída Esperada Teste 5](api-fiadopay/src/docs/assets/Teste5-400.png)
 ## Fluxo
 
 1) **Cadastrar merchant**
