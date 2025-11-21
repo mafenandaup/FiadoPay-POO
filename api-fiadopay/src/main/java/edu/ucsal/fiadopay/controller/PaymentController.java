@@ -35,12 +35,13 @@ public class PaymentController {
           var resp = service.createPayment(auth, idemKey, req);
           return ResponseEntity.status(HttpStatus.CREATED).body(resp);
 
-
       } catch (IllegalArgumentException e) {
           return ResponseEntity.badRequest().body(
                   new PaymentResponse(idemKey, "ERRO", req.method(),
                           req.amount(), req.installments(),
-                          null, null)
+                          null,
+                          null,
+                          "Erro: " + e.getMessage())
           );
       }
   }

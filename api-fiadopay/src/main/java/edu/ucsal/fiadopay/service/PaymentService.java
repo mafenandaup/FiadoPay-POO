@@ -15,6 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.beans.factory.annotation.Qualifier;
+import java.util.concurrent.ExecutorService;
+
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -30,23 +33,29 @@ import java.util.concurrent.CompletableFuture;
 
 @Service
 public class PaymentService {
-
     private final PaymentProcessor processor;
   private final MerchantRepository merchants;
   private final PaymentRepository payments;
   private final WebhookDeliveryRepository deliveries;
   private final ObjectMapper objectMapper;
+  private final ExecutorService executorService;
 
   @Value("${fiadopay.webhook-secret}") String secret;
   @Value("${fiadopay.processing-delay-ms}") long delay;
   @Value("${fiadopay.failure-rate}") double failRate;
 
-  public PaymentService(PaymentProcessor processor, MerchantRepository merchants, PaymentRepository payments, WebhookDeliveryRepository deliveries, ObjectMapper objectMapper) {
-      this.processor = processor;
-      this.merchants = merchants;
+  public PaymentService(PaymentProcessor processor,
+                        MerchantRepository merchants,
+                        PaymentRepository payments,
+                        WebhookDeliveryRepository deliveries,
+                        ObjectMapper objectMapper,
+                        @Qualifier("paymentExecutor") ExecutorService executorService) {
+    this.processor = processor;
+    this.merchants = merchants;
     this.payments = payments;
     this.deliveries = deliveries;
     this.objectMapper = objectMapper;
+    this.executorService = executorService;
   }
 
   private Merchant merchantFromAuth(String auth){
@@ -109,7 +118,7 @@ public class PaymentService {
 
     payments.save(payment);
 
-   CompletableFuture.runAsync(() -> processAndWebhook(payment.getId()));
+      executorService.submit(() -> processAndWebhook(payment.getId()));
 
     return toResponse(payment);
   }
@@ -182,7 +191,7 @@ public class PaymentService {
         .lastAttemptAt(null)
         .build());
 
-    CompletableFuture.runAsync(() -> tryDeliver(delivery.getId()));
+      executorService.submit(() -> tryDeliver(delivery.getId()));
   }
 
   private void tryDeliver(Long deliveryId){
@@ -231,7 +240,8 @@ public class PaymentService {
     return new PaymentResponse(
         p.getId(), p.getStatus().name(), p.getMethod(),
         p.getAmount(), p.getInstallments(), p.getMonthlyInterest(),
-        p.getTotalWithInterest()
+        p.getTotalWithInterest(),
+      null // caso n tiver erro
     );
   }
 }

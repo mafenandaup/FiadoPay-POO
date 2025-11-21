@@ -4,8 +4,9 @@ import edu.ucsal.fiadopay.annotations.AntiFraud;
 import edu.ucsal.fiadopay.controller.PaymentRequest;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class AntiFraudValidator implements ConstraintValidator <AntiFraud, PaymentRequest> {
 
     private double limite = 5000.00; //fixo por agr
@@ -20,11 +21,13 @@ public class AntiFraudValidator implements ConstraintValidator <AntiFraud, Payme
         if (request.amount() == null) {
             return true;
         }
+
         if (request.amount().doubleValue() > limite) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
                             "Valor acima do limite anti fraude: R$ " + limite + ". Tente novamente."
                     )
+                    .addPropertyNode("amount")
                     .addConstraintViolation();
             return false;
         }

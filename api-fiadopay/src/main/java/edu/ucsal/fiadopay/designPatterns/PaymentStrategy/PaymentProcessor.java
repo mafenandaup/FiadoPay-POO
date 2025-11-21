@@ -27,10 +27,12 @@ public class PaymentProcessor {
         return strategy.get();
     }
 
-    public void pay(String method, BigDecimal amount, Integer installments) {
+    public BigDecimal pay(String method, BigDecimal amount, Integer installments) {
         PaymentMethodStrategy strategy = findStrategy(method);
         BigDecimal finalAmount = strategy.calculateTotal(amount, installments); //calculamos o total conforme o método escolhido antes de pagar
 
         strategy.pay(finalAmount);
+
+        return finalAmount;
     }
 }

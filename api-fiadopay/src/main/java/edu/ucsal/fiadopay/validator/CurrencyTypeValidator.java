@@ -4,8 +4,11 @@ import edu.ucsal.fiadopay.annotations.CurrencyType;
 import edu.ucsal.fiadopay.annotations.PaymentMethod;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.stereotype.Component;
+
 import java.util.Currency;
 
+@Component
 public class CurrencyTypeValidator implements ConstraintValidator<CurrencyType, String> {
 
     @Override
@@ -19,7 +22,7 @@ public class CurrencyTypeValidator implements ConstraintValidator<CurrencyType, 
         } catch (IllegalArgumentException e) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
-                            "Tipo de moeda inválido: '" + moeda + "'. Use um código ISO 4217 válido (ex: BRL, USD)."
+                            "Tipo de moeda inválido: '" + moeda + "'.Tente novamente."
                     )
                     .addConstraintViolation();
             return false;
